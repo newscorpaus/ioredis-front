@@ -1,0 +1,22 @@
+{
+  "name": "ioredis-front",
+  "version": "1.0.0",
+  "description": "A connection manager for ioredis",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/newscorpaus/ioredis-frot"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ioredis": "^2.2.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.0.0"
+  }
+}
