@@ -28,12 +28,9 @@ function connect(options) {
     options.retryStrategy = retryStrategy;
 
     if (connections[key]) {
-        logger.info('redis-front: reusing connection.', { key: key,  pid: process.pid });
         return this.connections[key];
     }
 
-    logger.info('redis-front: creating a connection', { key: key,
-        pid: process.pid, connectionCount: Object.keys(connections).length });
     connections[key] = createConnection(options);
     connections[key]._name = key;
 
@@ -67,6 +64,7 @@ function deleteConnection(deadConnection) {
  * @returns an Ioredis Connection: Bluebird Promise, EventEmitter
  */
 function connectByName(name, options) {
+    options = options || {};
     name = "_" + name;
     options.host = options.host || 'localhost';
     options.port = options.port || 6379;
@@ -76,8 +74,6 @@ function connectByName(name, options) {
 
     if (oldConn) {
         if (options.host !== oldConn.options.host && options.port !== oldConn.options.port) {
-            logger.info("Replacing named connection.",
-                { oldOptions: oldConn.options, newOptions: options });
             conn = createConnection(options);
             conn._name = name;
         } else {
@@ -99,7 +95,7 @@ function connectByName(name, options) {
  */
 function createConnection(options) {
     let conn = new Ioredis(options);
-    conn = addEvents(conn, logger);
+    conn = addEvents(conn);
     return conn;
 }
 
@@ -115,7 +111,6 @@ function ejectAll() {
 
 let connections = {};
 let Ioredis;
-let logger;
 
 /**
  * @ngdoc function
@@ -123,14 +118,8 @@ let logger;
  *
  * Exposes a 'front' object that allows access to functions for organising Ioredis connections.
  */
-module.exports = function(_Ioredis, _logger) {
+module.exports = function(_Ioredis) {
     Ioredis = _Ioredis;
-
-    if (typeof _logger === 'undefined') {
-        _logger = defaultLogger;
-    }
-
-    logger = _logger;
 
     return {
         connections: connections,
@@ -150,35 +139,11 @@ module.exports = function(_Ioredis, _logger) {
  * See https://nodejs.org/api/events.html#events_class_events_eventemitter
  *
  * @param client
- * @param logger
  * @returns a client with the added events
  */
-function addEvents(conn, logger) {
-    conn
-        .on("close", function() {
-            logger.fatal("Redis has closed the connection to the client.",
-                { _name: conn._name, pid: process.pid });
-        })
-        .on("connect", function() {
-            logger.debug("Client connected to redis.",
-                { _name: conn._name, pid: process.pid });
-        })
-        .on("end", function() {
+function addEvents(conn) {
+    conn.on("end", function() {
             deleteConnection(conn);
-            logger.debug("Connection with redis has been ended.",
-                { _name: conn._name, pid: process.pid });
-        })
-        .on("error", function(err) {
-            logger.error("Error connecting to redis!",
-                { err: err, pid: process.pid });
-        })
-        .on("ready", function() {
-            logger.debug("Ready event signalled from Redis server.",
-                { _name: conn._name, pid: process.pid });
-        })
-        .on("reconnecting", function(delay) {
-            logger.debug("Trying to reconnect to redis in " + delay + " milliseconds.",
-                { _name: conn._name, pid: process.pid });
         });
 
     return conn;
@@ -235,13 +200,4 @@ function keymaker(options) {
     }
 
     return key;
-}
-
-const noop = function(){};
-
-const defaultLogger = {
-    debug: noop,
-    info: noop,
-    error: noop,
-    fatal: console.error
 }

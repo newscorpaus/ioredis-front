@@ -3,26 +3,23 @@
 `ioredis-front` is a connection manager for [ioredis](https://github.com/luin/ioredis) connections. 
 
 It is almost transparently the same to connect to redis via this manager as to build a normal ioredis connection with
-three benefits:
+two benefits:
 
 * connections with identical host and port parameters are reused
-* connections can be named, two allow for deliberate duplicate connections
-* improved logging on each ioredis client event
-
-Note - logging conforms to Bunyan but it is easy to specify your own logger. A bundled console logger
-is included (see below).
+* connections can be named, to allow for deliberate duplicate connections
 
 ### usage
+
+Both `connect` and `connectByName` return a standard Promise, EventEmitter based [connection](https://github.com/luin/ioredis/blob/master/API.md#Redis+connect) from `ioredis`. 
 
 #### connect
 
 First, instantiate a manager instance:
 
 ```
-let ioredis = require('ioredis'),
-    logger = require('bunyan);
+let ioredis = require('ioredis');
 
-let ioredisFront = require('ioredis-front')(ioredis, logger);
+let ioredisFront = require('ioredis-front')(ioredis);
 
 let conn = ioredisFront.connect();
 //show output of localhost connection
@@ -45,40 +42,6 @@ solely for redis pubsub interacts:
     var redisClient     = ioredisFront.connect({ host: redisHost, port: redisPort }),
         redisSubscriber = ioredisFront.connectByName(REDIS_PUB_SUB_CONN,
             { host: redisHost, port: redisPort });
-```
-
-### Logger
-
-`ioredis-front` logs event lifecycles from the ioredis connection. 
-
-It uses `fatal`, `error`, and `debug`. It is possible that `info` may be used at some stage.
-
-If you do not want to see logging you might do something like the follow:
-
-```
-let ioredis = require('ioredis');
-
-let noop = function(){};
-
-let nologging = {
-    debug: noop,
-    info: noop,
-    error: noop,
-    fatal: noop
-};
-
-
-let ioredisFront = require('ioredis-front')(ioredis, logger);
-
-```
-
-For convenience we package a logger that only reports the fatal level to console.error:
-
-```
-let ioredis = require('ioredis');
-
-let ioredisFront = require('ioredis-front')(ioredis);
-
 ```
 
 ## Miscellaneous
