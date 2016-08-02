@@ -1,6 +1,6 @@
 # ioredis-front
 
-`ioredis-front` is a connection manager for (ioredis)[https://github.com/luin/ioredis] connections. 
+`ioredis-front` is a connection manager for [ioredis](https://github.com/luin/ioredis) connections. 
 
 It is almost transparently the same to connect to redis via this manager as to build a normal ioredis connection with
 three benefits:
