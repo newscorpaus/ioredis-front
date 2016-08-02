@@ -81,7 +81,16 @@ let ioredisFront = require('ioredis-front')(ioredis);
 
 ```
 
-### Miscellaneous
+## Miscellaneous
 
 `ioredis-front` was built as part of tcog - a transformer of APIs. See https://www.youtube.com/watch?v=teJLIUuGqK4 
 
+# Contributing
+In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using ***`npm test`***
+
+# Release History
+
+- **0.1.0** Initial release
+
+# License
+Copyright (c) 2015 News Corp Australia. Licensed under the MIT license.

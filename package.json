@@ -11,7 +11,7 @@
     "url": "github.com/newscorpaus/ioredis-frot"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "ioredis": "^2.2.0"
   },
