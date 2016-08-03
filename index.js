@@ -13,10 +13,7 @@
  */
 
 function connect(options) {
-    options = options || {};
-    options.host = options.host || 'localhost';
-    options.port = options.port || 6379;
-
+    options = ensureOptions(options);
     let key = keymaker(options);
 
     options.lazyConnect = true;
@@ -64,10 +61,8 @@ function deleteConnection(deadConnection) {
  * @returns an Ioredis Connection: Bluebird Promise, EventEmitter
  */
 function connectByName(name, options) {
-    options = options || {};
+    options = ensureOptions(options);
     name = "_" + name;
-    options.host = options.host || 'localhost';
-    options.port = options.port || 6379;
 
     let oldConn = connections[name];
     let conn;
@@ -200,4 +195,18 @@ function keymaker(options) {
     }
 
     return key;
+}
+
+/**
+ * @ngdoc function
+ * @name collectOptions
+ *
+ * Supplies defaults if host or port are missing.
+ */
+function ensureOptions(options) {
+    options = options || {};
+    options.host = options.host || 'localhost';
+    options.port = options.port || 6379;
+
+    return options;
 }

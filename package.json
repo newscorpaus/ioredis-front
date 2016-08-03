@@ -12,10 +12,8 @@
   },
   "author": "",
   "license": "MIT",
-  "dependencies": {
-    "ioredis": "^2.2.0"
-  },
   "devDependencies": {
+    "ioredis": "^2.2.0",
     "chai": "^3.5.0",
     "mocha": "^3.0.0"
   }
