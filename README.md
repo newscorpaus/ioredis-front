@@ -44,6 +44,11 @@ solely for redis pubsub interacts:
             { host: redisHost, port: redisPort });
 ```
 
+
+Importantly, if `connectByName` is used more than once with the same name but different connection parameters, it will
+replace the former connection rather than returning a null or throwing an error. We chose to do this to preserve the 
+DSL of working with an `ioredis` connection, which follows a Promise based pattern.
+
 ## Miscellaneous
 
 `ioredis-front` was built as part of tcog - a transformer of APIs. See https://www.youtube.com/watch?v=teJLIUuGqK4 

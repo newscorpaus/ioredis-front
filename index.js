@@ -68,6 +68,10 @@ function connectByName(name, options) {
     let conn;
 
     if (oldConn) {
+        /*
+            Note the silent replacement for a connection referenced by name
+            with different connection parameters. See README
+         */
         if (options.host !== oldConn.options.host && options.port !== oldConn.options.port) {
             conn = createConnection(options);
             conn._name = name;
