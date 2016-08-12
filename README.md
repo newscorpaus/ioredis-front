@@ -61,4 +61,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 - **0.1.0** Initial release
 
 # License
-Copyright (c) 2015 News Corp Australia. Licensed under the MIT license.
+Copyright (c) 2016 News Corp Australia. Licensed under the MIT license.
