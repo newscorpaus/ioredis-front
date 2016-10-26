@@ -61,6 +61,10 @@ function deleteConnection(deadConnection) {
  * @returns an Ioredis Connection: Bluebird Promise, EventEmitter
  */
 function connectByName(name, options) {
+    if (typeof name !== 'string') {
+        throw new Error('Use a string as first argument with connectByName!');
+    }
+
     options = ensureOptions(options);
     name = "_" + name;
 

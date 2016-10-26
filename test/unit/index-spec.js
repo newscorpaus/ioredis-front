@@ -101,3 +101,13 @@ describe('adding a unique connection', function() {
         expect(conn.options.port).to.equal(1111);
     });
 });
+
+describe('ensuring that connectByNames first parameter is a string', () => {
+    it('throws an error if it is not a string', function() {
+        expect(function(){
+            getImplementation(deps).connectByName({}, { host: 'localhost', port: 6358 });
+        }).to.throw('Use a string as first argument with connectByName!');
+
+    });
+});
+
